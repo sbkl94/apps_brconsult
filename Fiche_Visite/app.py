@@ -6,11 +6,27 @@ import tempfile
 import base64 
 import json
 from datetime import datetime
+from pathlib import Path
+
+def get_logo_from_file():
+    # Get the absolute path to the logo file
+    current_dir = Path(__file__).parent
+    logo_path = current_dir / 'assets' / 'logo_br.jpg'
+    
+    try:
+        with open(logo_path, 'rb') as image_file:
+            return base64.b64encode(image_file.read()).decode('utf-8')
+    except Exception as e:
+        print(f"Error loading logo: {e}")
+        return None
+
+# Load the logo once when the app starts
+LOGO_BR_BASE64 = get_logo_from_file()
 
 def check_required_fields(adresse, conducteur, chef_chantier, contact_chantier, redacteur_rapport):
     return all([adresse.strip(), conducteur.strip(), chef_chantier.strip(), contact_chantier.strip(), redacteur_rapport.strip()])
 
-st.set_page_config(page_title="FICHE DE VISITE BR CONSULT", layout="wide")
+st.set_page_config(page_title="RAPPORT DE VISITE BR CONSULT", layout="wide")
 
 # Dictionnaire des critères par catégorie
 categories = {
@@ -147,7 +163,7 @@ if uploaded_json is not None and not st.session_state.file_processed:
 if uploaded_json is None:
     st.session_state.file_processed = False
 
-st.title("🏗️ Fiche de Visite – BR CONSULT")
+st.title("🏗️ Rapport de Visite – BR CONSULT")
 
 st.subheader("🧱 Informations générales")
 
@@ -425,9 +441,32 @@ else:
                 .header {{
                     background: #ffffff;
                     color: #000000;
-                    padding: 50px 40px 30px 40px;
-                    text-align: center;
+                    padding: 20px 40px 30px 40px;
                     position: relative;
+                    min-height: 160px;
+                }}
+                
+                .logo-container {{
+                    position: absolute;
+                    left: 40px;
+                    top: 20px;
+                }}
+                
+                .logo-container img {{
+                    width: 80px;
+                    height: auto;
+                    display: block;
+                }}
+                
+                .page-title {{
+                    font-family: 'Montserrat', sans-serif;
+                    font-size: 2.5em;
+                    font-weight: 700;
+                    letter-spacing: 1px;
+                    color: #000000;
+                    text-transform: uppercase;
+                    text-align: center;
+                    padding-top: 80px;
                 }}
                 
                 .header::after {{
@@ -438,16 +477,6 @@ else:
                     right: 0;
                     height: 5px;
                     background: #dc2626;
-                }}
-                
-                .page-title {{
-                    font-family: 'Montserrat', sans-serif;
-                    font-size: 2.5em;
-                    font-weight: 700;
-                    margin-bottom: 30px;
-                    letter-spacing: 1px;
-                    color: #000000;
-                    text-transform: uppercase;
                 }}
                 
                 /* Content sections */
@@ -773,37 +802,7 @@ else:
                     font-weight: 600;
                     border: 1px solid #fecaca;
                 }}
-                
-                /* Footer - BR CONSULT style */
-                .footer {{
-                    background: #000000;
-                    color: white;
-                    text-align: center;
-                    padding: 30px;
-                    font-size: 0.9em;
-                    position: relative;
-                    margin-top: auto;
-                    page-break-inside: avoid;
-                    break-inside: avoid;
-                }}
-                
-                .footer::before {{
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    height: 5px;
-                    background: #dc2626;
-                }}
-                
-                .footer-tagline {{
-                    font-style: italic;
-                    color: #cccccc;
-                    margin-top: 10px;
-                }}
-                
-                /* Print styles */
+                  /* Print styles */
                 @media print {{
                     body {{
                         background: white;
@@ -820,24 +819,20 @@ else:
                     }}
                     .criteria-table {{
                         page-break-inside: auto;
-                    }}
-                    .criteria-table tr {{
+                    }}                    .criteria-table tr {{
                         page-break-inside: avoid;
-                    }}
-                    .footer {{
-                        position: fixed;
-                        bottom: 0;
-                        left: 0;
-                        right: 0;
                     }}
                 }}
             </style>
         </head>
         <body>
-            <div class="container">
-                <!-- Header -->
-                <div class="header">
-                    <div class="page-title">FICHE DE VISITE CHANTIER</div>
+            <div class="container">                <!-- Header -->                <div class="header">
+                    {'''
+                    <div class="logo-container">
+                        <img src="data:image/jpeg;base64,''' + str(LOGO_BR_BASE64) + '''" alt="BR CONSULT Logo" />
+                    </div>
+                    ''' if LOGO_BR_BASE64 else ''}
+                    <div class="page-title">RAPPORT DE VISITE CHANTIER</div>
                 </div>
                 
                 <!-- Content -->
@@ -854,7 +849,7 @@ else:
                                 <div class="info-value">{st.session_state['date'].strftime('%d/%m/%Y')}</div>
                             </div>
                             <div class="info-item">
-                                <div class="info-label">Heure</div>
+                                <div class="info-label">Heure de visite</div>
                                 <div class="info-value">{st.session_state['heure'] or 'Non renseignée'}</div>
                             </div>
                             <div class="info-item">
@@ -1044,8 +1039,7 @@ else:
         """
         
         # Attendance sheet section
-        html += """
-                    <!-- Attendance Sheet -->
+        html += """                    <!-- Attendance Sheet -->
                     <div class="section">
                         <h2 class="section-title">
                             <span class="icon">✍️</span>
@@ -1078,16 +1072,9 @@ else:
         html += """
                     </div>
                 </div>
-            </div>
-            
-            <!-- Footer -->
-            <div class="footer">
-                <p><strong>BR CONSULT</strong> - Rapport généré le {}</p>
-                <p class="footer-tagline">© 2025 Tous droits réservés</p>
-            </div>
-        </body>
-        </html>
-        """.format(datetime.now().strftime("%d/%m/%Y à %H:%M"))
+            </div>        </body>
+    </html>
+""".format(datetime.now().strftime("%d/%m/%Y à %H:%M"))
         
         # Generate PDF
         try:
@@ -1107,7 +1094,7 @@ else:
                     st.download_button(
                         label="📥 Télécharger le PDF",
                         data=file,
-                        file_name=f"fiche_visite_chantier_{current_date}.pdf",
+                        file_name=f"rapport_visite_chantier_{current_date}.pdf",
                         mime="application/pdf"
                     )
                     
