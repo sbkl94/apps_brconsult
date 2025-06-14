@@ -65,6 +65,7 @@ categories = {
 def init_session_state():
     if 'initialized' not in st.session_state:
         defaults = {
+            'nom_client': '',  # New field for client name
             'date': datetime.now().date(),
             'heure': '',
             'adresse': '',
@@ -109,14 +110,16 @@ if uploaded_json is not None and not st.session_state.file_processed:
     try:
         # Load the JSON content with proper UTF-8 encoding
         content = uploaded_json.read().decode('utf-8-sig')
-        saved_data = json.loads(content)
-        
-        # Validate required fields
+        saved_data = json.loads(content)        # Validate required fields (excluding nom_client for backward compatibility)
         required_fields = ['date', 'adresse', 'conducteur', 'chef_chantier', 'contact_chantier']
         missing_fields = [field for field in required_fields if field not in saved_data]
         if missing_fields:
             st.error(f"❌ Champs requis manquants dans le fichier : {', '.join(missing_fields)}")
             st.stop()
+              # Handle nom_client field for backward compatibility
+        if 'nom_client' not in saved_data:
+            saved_data['nom_client'] = ''  # Set empty string for older files
+            st.session_state['nom_client'] = ''  # Ensure it's set in session state
             
         # Convert date string to datetime.date object
         if 'date' in saved_data:
@@ -127,9 +130,9 @@ if uploaded_json is not None and not st.session_state.file_processed:
             except ValueError:
                 st.error("❌ Format de date invalide dans le fichier")
                 st.stop()
-                  # Set all basic form fields from saved data
+                  # Set all basic form fields from saved data        
         basic_fields = [
-            'heure', 'adresse', 'presence_sst', 'effectif', 'conducteur',
+            'nom_client', 'heure', 'adresse', 'presence_sst', 'effectif', 'conducteur',
             'chef_chantier', 'contact_chantier', 'redacteur_rapport', 'travaux_selectionnes',
             'travaux_autres', 'theme_visite', 'evaluation_generale', 'lien_photos'
         ]
@@ -171,6 +174,7 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.date_input("Date de la visite", key='date')
+    st.text_input("Nom du client*", key='nom_client', value=st.session_state.get('nom_client', ''))
     st.text_input("Adresse du chantier*", key='adresse')
 
 with col2:
@@ -842,8 +846,11 @@ else:
                         <h2 class="section-title">
                             <span class="icon">📋</span>
                             Informations Générales
-                        </h2>
-                        <div class="info-grid">
+                        </h2>                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label">Nom du client</div>
+                                <div class="info-value">{st.session_state['nom_client']}</div>
+                            </div>
                             <div class="info-item">
                                 <div class="info-label">Date de visite</div>
                                 <div class="info-value">{st.session_state['date'].strftime('%d/%m/%Y')}</div>
