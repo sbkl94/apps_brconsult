@@ -938,7 +938,7 @@ else:
                             Photos du Chantier
                         </h2>
                         <div class="photos-link-box">
-                            <p style="margin-bottom: 10px;">Les photos haute définition du chantier sont disponibles via le lien suivant :</p>
+                            <p style="margin-bottom: 10px;">Les photos du chantier sont disponibles via le lien suivant :</p>
                             <a href="{st.session_state["lien_photos"]}" target="_blank">{st.session_state["lien_photos"]}</a>
                         </div>
                     </div>
