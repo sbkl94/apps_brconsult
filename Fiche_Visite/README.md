@@ -1,8 +1,8 @@
-# 🏗️ Fiche de Visite Chantier - BR CONSULT
+# 🏗️ Rapport de Visite Chantier - BR CONSULT
 
-## 📋 Description
+## 📋 Description 
 
-Cette application permet aux inspecteurs BR CONSULT de **remplir leur fiche de visite chantier** directement depuis leur navigateur. Plus besoin de paperasse ou de formulaires Excel compliqués !
+Cette application permet aux inspecteurs BR CONSULT de **remplir leur rapport de visite chantier** directement depuis leur navigateur. Plus besoin de paperasse ou de formulaires Excel compliqués !
 
 ## 🎯 À quoi ça sert ?
 
