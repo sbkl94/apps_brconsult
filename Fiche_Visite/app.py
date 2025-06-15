@@ -343,20 +343,26 @@ if emargement:
         st.info("PDF chargé. Il sera inclus dans le rapport final.")
 
 # Configuration pour la génération PDF
-if platform.system() == "Windows":
-    config = pdfkit.configuration(wkhtmltopdf="C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe")
-else:
-    # Sur Streamlit Cloud, wkhtmltopdf devrait être dans PATH
+def configure_wkhtmltopdf():
     try:
-        # Vérifier si wkhtmltopdf est installé
-        result = subprocess.run(['which', 'wkhtmltopdf'], capture_output=True, text=True)
-        if result.returncode == 0:
-            wkhtmltopdf_path = result.stdout.strip()
-            config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+        # For Unix-like systems or WSL
+        if platform.system() != 'Windows':
+            wkhtmltopdf_path = '/usr/bin/wkhtmltopdf'
         else:
-            config = pdfkit.configuration()
-    except:
-        config = pdfkit.configuration()
+            # For Windows
+            wkhtmltopdf_path = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+            if not os.path.exists(wkhtmltopdf_path):
+                wkhtmltopdf_path = r'C:\Program Files (x86)\wkhtmltopdf\bin\wkhtmltopdf.exe'
+        
+        if os.path.exists(wkhtmltopdf_path):
+            return pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+        return pdfkit.configuration()
+    except Exception as e:
+        st.warning("Note: PDF generation might be limited due to wkhtmltopdf configuration")
+        return pdfkit.configuration()
+
+# Initialize wkhtmltopdf configuration
+config = configure_wkhtmltopdf()
 
 st.subheader("💾 Sauvegarde de l'avancement")
 
