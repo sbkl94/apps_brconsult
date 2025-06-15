@@ -382,6 +382,7 @@ if st.button("💾 Sauvegarder l'avancement"):
         save_data = {
             'date': str(st.session_state['date']),
             'heure': st.session_state['heure'],
+            'nom_client': st.session_state['nom_client'],
             'adresse': st.session_state['adresse'],
             'presence_sst': st.session_state['presence_sst'],
             'effectif': st.session_state['effectif'],
