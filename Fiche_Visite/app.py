@@ -341,12 +341,14 @@ if emargement:
         st.info("PDF chargé. Il sera inclus dans le rapport final.")
 
 # Configuration multi-plateforme - permet de s'assurer que l'app fonctionnera sur Windows et Linux ie sur Streamlit Cloud
-if platform.system() == "Windows":
-    config = pdfkit.configuration(wkhtmltopdf="C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe")
-else:
-    # Pour Linux (Streamlit Cloud)
-    config = pdfkit.configuration(wkhtmltopdf="/usr/bin/wkhtmltopdf")
-
+try:
+    if platform.system() == "Windows":
+        config = pdfkit.configuration(wkhtmltopdf="C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe")
+    else:
+        config = pdfkit.configuration()  # Laisser pdfkit trouver tout seul
+except:
+    config = None
+    
 st.subheader("💾 Sauvegarde de l'avancement")
 
 # Bouton de sauvegarde
