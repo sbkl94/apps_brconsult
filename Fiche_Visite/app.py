@@ -174,7 +174,7 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.date_input("Date de la visite", key='date')
-    st.text_input("Nom du client*", key='nom_client', value=st.session_state.get('nom_client', ''))
+    st.text_input("Nom du client*", key='nom_client')
     st.text_input("Adresse du chantier*", key='adresse')
 
 with col2:
