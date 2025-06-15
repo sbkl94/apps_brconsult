@@ -1,13 +1,15 @@
 import streamlit as st
 import re
 import io
-from weasyprint import HTML
+import pdfkit
 import tempfile 
 import base64 
 import json
 from datetime import datetime
 from pathlib import Path
 import platform
+import subprocess
+import os
 
 def get_logo_from_file():
     # Get the absolute path to the logo file
@@ -339,6 +341,22 @@ if emargement:
         st.image(emargement, width=300)
     else:
         st.info("PDF chargé. Il sera inclus dans le rapport final.")
+
+# Configuration pour la génération PDF
+if platform.system() == "Windows":
+    config = pdfkit.configuration(wkhtmltopdf="C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe")
+else:
+    # Sur Streamlit Cloud, wkhtmltopdf devrait être dans PATH
+    try:
+        # Vérifier si wkhtmltopdf est installé
+        result = subprocess.run(['which', 'wkhtmltopdf'], capture_output=True, text=True)
+        if result.returncode == 0:
+            wkhtmltopdf_path = result.stdout.strip()
+            config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+        else:
+            config = pdfkit.configuration()
+    except:
+        config = pdfkit.configuration()
 
 st.subheader("💾 Sauvegarde de l'avancement")
 
@@ -1092,10 +1110,21 @@ else:
     </html>
 """
         
-# Generate PDF with weasyprint
+        # Generate PDF
         try:
             with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as f:
-                HTML(string=html).write_pdf(f.name)
+                pdfkit.from_string(html, f.name, configuration=config, options={
+                    'enable-local-file-access': None,
+                    'encoding': 'UTF-8',
+                    'page-size': 'A4',
+                    'margin-top': '0mm',
+                    'margin-right': '0mm',
+                    'margin-bottom': '0mm',
+                    'margin-left': '0mm',
+                    'no-outline': None,
+                    'print-media-type': None,
+                    'dpi': 300
+                })
                 
                 with open(f.name, "rb") as file:
                     st.download_button(
