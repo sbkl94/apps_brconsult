@@ -1,7 +1,7 @@
 import streamlit as st
 import re
 import io
-import pdfkit
+from weasyprint import HTML
 import tempfile 
 import base64 
 import json
@@ -340,15 +340,6 @@ if emargement:
     else:
         st.info("PDF chargé. Il sera inclus dans le rapport final.")
 
-# Configuration multi-plateforme - permet de s'assurer que l'app fonctionnera sur Windows et Linux ie sur Streamlit Cloud
-try:
-    if platform.system() == "Windows":
-        config = pdfkit.configuration(wkhtmltopdf="C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe")
-    else:
-        config = pdfkit.configuration()  # Laisser pdfkit trouver tout seul
-except:
-    config = None
-    
 st.subheader("💾 Sauvegarde de l'avancement")
 
 # Bouton de sauvegarde
@@ -1101,21 +1092,10 @@ else:
     </html>
 """
         
-        # Generate PDF with optimized settings
+# Generate PDF with weasyprint
         try:
             with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as f:
-                pdfkit.from_string(html, f.name, configuration=config, options={
-                    'enable-local-file-access': None,
-                    'encoding': 'UTF-8',
-                    'page-size': 'A4',
-                    'margin-top': '0mm',
-                    'margin-right': '0mm',
-                    'margin-bottom': '0mm',
-                    'margin-left': '0mm',
-                    'no-outline': None,
-                    'print-media-type': None,
-                    'dpi': 300
-                })
+                HTML(string=html).write_pdf(f.name)
                 
                 with open(f.name, "rb") as file:
                     st.download_button(
