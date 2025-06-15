@@ -7,6 +7,7 @@ import base64
 import json
 from datetime import datetime
 from pathlib import Path
+import platform
 
 def get_logo_from_file():
     # Get the absolute path to the logo file
@@ -339,8 +340,12 @@ if emargement:
     else:
         st.info("PDF chargé. Il sera inclus dans le rapport final.")
 
-# Configuration pour Windows
-config = pdfkit.configuration(wkhtmltopdf="C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe")
+# Configuration multi-plateforme - permet de s'assurer que l'app fonctionnera sur Windows et Linux ie sur Streamlit Cloud
+if platform.system() == "Windows":
+    config = pdfkit.configuration(wkhtmltopdf="C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe")
+else:
+    # Pour Linux (Streamlit Cloud)
+    config = pdfkit.configuration(wkhtmltopdf="/usr/bin/wkhtmltopdf")
 
 st.subheader("💾 Sauvegarde de l'avancement")
 
