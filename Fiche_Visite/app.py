@@ -344,22 +344,26 @@ if emargement:
 
 # Configuration pour la génération PDF
 def configure_wkhtmltopdf():
+    # On Streamlit Cloud, wkhtmltopdf is installed via packages.txt
+    if os.path.exists('/usr/bin/wkhtmltopdf'):
+        return pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+    
+    # For Windows local development
+    if platform.system() == 'Windows':
+        windows_paths = [
+            r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe',
+            r'C:\Program Files (x86)\wkhtmltopdf\bin\wkhtmltopdf.exe'
+        ]
+        for path in windows_paths:
+            if os.path.exists(path):
+                return pdfkit.configuration(wkhtmltopdf=path)
+    
+    # Default configuration
     try:
-        # For Unix-like systems or WSL
-        if platform.system() != 'Windows':
-            wkhtmltopdf_path = '/usr/bin/wkhtmltopdf'
-        else:
-            # For Windows
-            wkhtmltopdf_path = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
-            if not os.path.exists(wkhtmltopdf_path):
-                wkhtmltopdf_path = r'C:\Program Files (x86)\wkhtmltopdf\bin\wkhtmltopdf.exe'
-        
-        if os.path.exists(wkhtmltopdf_path):
-            return pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
         return pdfkit.configuration()
     except Exception as e:
-        st.warning("Note: PDF generation might be limited due to wkhtmltopdf configuration")
-        return pdfkit.configuration()
+        st.warning("Note: PDF generation requires wkhtmltopdf to be installed")
+        return None
 
 # Initialize wkhtmltopdf configuration
 config = configure_wkhtmltopdf()
@@ -1114,10 +1118,13 @@ else:
             </div>
         </body>
     </html>
-"""
-        
-        # Generate PDF
+"""        # Generate PDF
+        if config is None:
+            st.error("PDF generation is not available. Please make sure wkhtmltopdf is installed.")
+            st.stop()
+            
         try:
+
             with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as f:
                 pdfkit.from_string(html, f.name, configuration=config, options={
                     'enable-local-file-access': None,
