@@ -421,83 +421,104 @@ else:
                     box-sizing: border-box;
                 }}
                 
+                @page {{
+                    size: A4;
+                    margin: 5mm 5mm 5mm 5mm;
+                }}
+                
                 body {{
                     font-family: 'Open Sans', Arial, sans-serif;
                     line-height: 1.6;
                     color: #2c2c2c;
                     background: #ffffff;
-                    min-height: 100vh;
-                    display: flex;
-                    flex-direction: column;
+                    width: 100%;
+                    margin: 0;
+                    padding: 0;
                 }}
                 
                 .container {{
-                    flex: 1;
-                    max-width: 800px;
+                    width: 100%;
                     margin: 0 auto;
                     background: white;
-                    box-shadow: 0 0 30px rgba(0,0,0,0.1);
-                    display: flex;
-                    flex-direction: column;
+                    padding: 0;
                 }}
                 
-                /* Header - BR CONSULT style */
-                .header {{
+                /* Wrapper for page content with borders */
+                .page-wrapper {{
+                    border: 2px solid #dc2626;
+                    border-radius: 8px;
+                    margin: 5mm;
+                    padding: 15px;
+                    min-height: calc(297mm - 20mm);
+                    position: relative;
+                    page-break-inside: avoid;
+                    page-break-after: always;
+                }}
+                
+                .page-wrapper:last-child {{
+                    page-break-after: avoid;
+                }}
+                
+                /* Header with title for first page only */
+                .header-with-title {{
                     background: #ffffff;
                     color: #000000;
-                    padding: 20px 40px 30px 40px;
+                    padding: 15px 30px 20px 30px;
                     position: relative;
-                    min-height: 160px;
+                    min-height: 120px;
+                    margin: -15px -15px 20px -15px;
+                    border-bottom: 3px solid #dc2626;
+                    border-radius: 6px 6px 0 0;
+                }}
+                
+                /* Header with logo only for other pages */
+                .header-logo-only {{
+                    position: absolute;
+                    top: 15px;
+                    left: 30px;
+                    z-index: 10;
                 }}
                 
                 .logo-container {{
                     position: absolute;
-                    left: 40px;
-                    top: 20px;
+                    left: 30px;
+                    top: 15px;
                 }}
                 
                 .logo-container img {{
-                    width: 80px;
+                    width: 60px;
                     height: auto;
                     display: block;
                 }}
                 
                 .page-title {{
                     font-family: 'Montserrat', sans-serif;
-                    font-size: 2.5em;
+                    font-size: 2em;
                     font-weight: 700;
                     letter-spacing: 1px;
                     color: #000000;
                     text-transform: uppercase;
                     text-align: center;
-                    padding-top: 80px;
-                }}
-                
-                .header::after {{
-                    content: '';
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    height: 5px;
-                    background: #dc2626;
+                    padding-top: 60px;
                 }}
                 
                 /* Content sections */
                 .content {{
-                    flex: 1;
-                    padding: 40px;
+                    padding: 0 10px;
+                }}
+                
+                .content-with-logo {{
+                    padding: 80px 10px 10px 10px;
                 }}
                 
                 .section {{
-                    margin-bottom: 35px;
-                    padding: 30px;
+                    margin-bottom: 15px;
+                    padding: 15px;
                     background: #fafafa;
-                    border-radius: 8px;
+                    border-radius: 6px;
                     border: 1px solid #e5e5e5;
                     position: relative;
                     page-break-inside: avoid;
-                    break-inside: avoid;
                 }}
                 
                 .section::before {{
@@ -506,28 +527,26 @@ else:
                     left: 0;
                     top: 0;
                     bottom: 0;
-                    width: 4px;
+                    width: 3px;
                     background: #dc2626;
-                    border-radius: 8px 0 0 8px;
+                    border-radius: 6px 0 0 6px;
                 }}
                 
                 .section-title {{
                     color: #000000;
                     font-family: 'Montserrat', sans-serif;
-                    font-size: 1.6em;
+                    font-size: 1.4em;
                     font-weight: 600;
-                    margin-bottom: 25px;
-                    padding-bottom: 12px;
+                    margin-bottom: 20px;
+                    padding-bottom: 10px;
                     border-bottom: 2px solid #dc2626;
                     display: flex;
                     align-items: center;
-                    page-break-after: avoid;
-                    break-after: avoid;
                 }}
                 
                 .icon {{
-                    margin-right: 12px;
-                    font-size: 1.1em;
+                    margin-right: 10px;
+                    font-size: 1em;
                     color: #dc2626;
                 }}
                 
@@ -535,35 +554,29 @@ else:
                 .info-grid {{
                     display: grid;
                     grid-template-columns: repeat(2, 1fr);
-                    gap: 20px;
-                    margin-bottom: 20px;
+                    gap: 15px;
+                    margin-bottom: 15px;
                 }}
                 
                 .info-item {{
-                    padding: 15px;
+                    padding: 12px;
                     background: white;
-                    border-radius: 6px;
+                    border-radius: 5px;
                     border: 1px solid #e5e5e5;
-                    transition: all 0.3s ease;
-                }}
-                
-                .info-item:hover {{
-                    border-color: #dc2626;
-                    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.1);
                 }}
                 
                 .info-label {{
                     font-weight: 600;
                     color: #666666;
-                    font-size: 0.85em;
+                    font-size: 0.8em;
                     text-transform: uppercase;
                     letter-spacing: 0.5px;
-                    margin-bottom: 5px;
+                    margin-bottom: 4px;
                 }}
                 
                 .info-value {{
                     color: #000000;
-                    font-size: 1.1em;
+                    font-size: 1em;
                     font-weight: 500;
                 }}
                 
@@ -571,9 +584,9 @@ else:
                 .photos-link-box {{
                     background: #e3f2fd;
                     border: 2px solid #1976d2;
-                    border-radius: 8px;
-                    padding: 20px;
-                    margin: 20px 0;
+                    border-radius: 6px;
+                    padding: 15px;
+                    margin: 15px 0;
                     text-align: center;
                 }}
                 
@@ -581,74 +594,60 @@ else:
                     color: #1976d2;
                     font-weight: 600;
                     text-decoration: none;
-                    font-size: 0.9em;
+                    font-size: 0.85em;
                     word-break: break-all;
                     display: inline-block;
                     max-width: 100%;
-                }}
-                
-                .photos-link-box a:hover {{
-                    text-decoration: underline;
                 }}
                 
                 /* Results presentation style */
                 .results-grid {{
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
-                    gap: 30px;
-                    margin: 30px 0;
+                    gap: 20px;
+                    margin: 20px 0;
                     text-align: center;
                 }}
                 
                 .result-item {{
-                    padding: 30px 20px;
+                    padding: 25px 15px;
                     background: white;
-                    border-radius: 8px;
+                    border-radius: 6px;
                     border: 2px solid #e5e5e5;
-                    transition: all 0.3s ease;
-                }}
-                
-                .result-item:hover {{
-                    border-color: #dc2626;
-                    transform: translateY(-5px);
-                    box-shadow: 0 5px 20px rgba(220, 38, 38, 0.15);
                 }}
                 
                 .result-category {{
                     font-family: 'Montserrat', sans-serif;
-                    font-size: 1.1em;
+                    font-size: 0.95em;
                     font-weight: 700;
                     text-transform: uppercase;
-                    letter-spacing: 1px;
+                    letter-spacing: 0.8px;
                     color: #2c2c2c;
-                    margin-bottom: 15px;
+                    margin-bottom: 10px;
                 }}
                 
                 .result-score {{
                     font-family: 'Montserrat', sans-serif;
-                    font-size: 3.5em;
+                    font-size: 2.8em;
                     font-weight: 700;
                     color: #dc2626;
                     line-height: 1;
-                    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
                 }}
                 
                 /* Global score - BR CONSULT style */
                 .global-score {{
                     text-align: center;
-                    padding: 40px;
+                    padding: 30px;
                     background: #000000;
                     color: white;
-                    border-radius: 12px;
-                    margin: 40px 0;
+                    border-radius: 8px;
+                    margin: 30px 0;
                     position: relative;
-                    page-break-inside: avoid;
-                    break-inside: avoid;
                 }}
                 
                 .score-value {{
                     font-family: 'Montserrat', sans-serif;
-                    font-size: 4.5em;
+                    font-size: 3.5em;
                     font-weight: 700;
                     margin: 0;
                     color: white;
@@ -657,87 +656,55 @@ else:
                 
                 .score-label {{
                     font-family: 'Open Sans', sans-serif;
-                    font-size: 1.2em;
+                    font-size: 1.1em;
                     font-weight: 400;
                     letter-spacing: 1px;
                     text-transform: uppercase;
-                    margin-bottom: 20px;
-                }}
-                
-                /* Page breaks */
-                .page-break {{
-                    page-break-after: always;
-                    break-after: always;
-                }}
-                
-                .page-break-before {{
-                    page-break-before: always;
-                    break-before: always;
-                }}
-                
-                /* Criteria sections with page break control */
-                .criteria-section {{
-                    page-break-inside: avoid;
-                    break-inside: avoid;
-                    margin-bottom: 30px;
-                }}
-                
-                .criteria-section.new-page {{
-                    page-break-before: always;
-                    break-before: always;
+                    margin-bottom: 15px;
                 }}
                 
                 /* Category headers */
                 .category-header {{
                     font-family: 'Montserrat', sans-serif;
                     color: #000000;
-                    margin: 30px 0 20px 0;
-                    font-size: 1.5em;
+                    margin: 10px 0 10px 0;
+                    font-size: 1.3em;
                     font-weight: 600;
-                    padding-left: 15px;
-                    border-left: 4px solid #dc2626;
-                    page-break-after: avoid;
-                    break-after: avoid;
+                    padding-left: 12px;
+                    border-left: 3px solid #dc2626;
                 }}
                 
                 /* Criteria table - BR CONSULT style */
                 .criteria-table {{
                     width: 100%;
                     border-collapse: collapse;
-                    margin-top: 25px;
+                    margin-top: 10px;
+                    margin-bottom: 15px;
                     background: white;
-                    border-radius: 8px;
+                    border-radius: 6px;
                     overflow: hidden;
-                    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-                    page-break-inside: auto;
+                    box-shadow: 0 1px 5px rgba(0,0,0,0.05);
                 }}
                 
                 .criteria-table th {{
                     background: #2c2c2c;
                     color: white;
-                    padding: 18px 15px;
+                    padding: 15px 12px;
                     text-align: left;
                     font-weight: 600;
-                    font-size: 0.95em;
+                    font-size: 0.9em;
                     letter-spacing: 0.5px;
-                    page-break-after: avoid;
-                    break-after: avoid;
                 }}
                 
                 .criteria-table th:first-child {{
-                    border-left: 4px solid #dc2626;
+                    border-left: 3px solid #dc2626;
                 }}
                 
                 .criteria-table td {{
-                    padding: 15px;
+                    padding: 12px;
                     border-bottom: 1px solid #f0f0f0;
                     background: white;
-                    page-break-inside: avoid;
-                    break-inside: avoid;
-                }}
-                
-                .criteria-table tr:hover td {{
-                    background: #fafafa;
+                    font-size: 0.9em;
                 }}
                 
                 .criteria-table tr:last-child td {{
@@ -747,13 +714,13 @@ else:
                 /* Status badges - BR CONSULT style */
                 .status {{
                     display: inline-block;
-                    padding: 6px 14px;
-                    border-radius: 20px;
-                    font-size: 0.85em;
+                    padding: 5px 12px;
+                    border-radius: 15px;
+                    font-size: 0.8em;
                     font-weight: 600;
                     text-align: center;
-                    min-width: 140px;
-                    letter-spacing: 0.3px;
+                    min-width: 120px;
+                    letter-spacing: 0.2px;
                 }}
                 
                 .status-satisfaisant {{
@@ -784,119 +751,134 @@ else:
                 .observation {{
                     font-style: italic;
                     color: #6b7280;
-                    font-size: 0.9em;
-                    margin-top: 5px;
-                    line-height: 1.4;
+                    font-size: 0.85em;
+                    margin-top: 3px;
+                    line-height: 1.3;
                 }}
                 
                 /* Work types - BR CONSULT style */
                 .work-tags {{
                     display: flex;
                     flex-wrap: wrap;
-                    gap: 10px;
-                    margin-top: 15px;
+                    gap: 8px;
+                    margin-top: 12px;
                 }}
                 
                 .work-tag {{
                     background: #fee2e2;
                     color: #dc2626;
-                    padding: 8px 18px;
-                    border-radius: 25px;
-                    font-size: 0.9em;
+                    padding: 6px 15px;
+                    border-radius: 20px;
+                    font-size: 0.85em;
                     font-weight: 600;
                     border: 1px solid #fecaca;
                 }}
-                  /* Print styles */
+                
+                /* Print styles */
                 @media print {{
                     body {{
                         background: white;
+                        margin: 0;
+                        padding: 0;
                     }}
-                    .container {{
-                        box-shadow: none;
-                    }}
-                    .section {{
-                        border: 1px solid #ddd;
+                    
+                    .page-wrapper {{
+                        border: 2px solid #dc2626;
+                        margin: 5mm;
                         page-break-inside: avoid;
                     }}
-                    .category-header {{
-                        page-break-after: avoid;
+                    
+                    .container {{
+                        width: 100%;
                     }}
+                    
+                    .section {{
+                        page-break-inside: avoid;
+                    }}
+                    
                     .criteria-table {{
                         page-break-inside: auto;
-                    }}                    .criteria-table tr {{
+                    }}
+                    
+                    .criteria-table tr {{
                         page-break-inside: avoid;
                     }}
                 }}
             </style>
         </head>
         <body>
-            <div class="container">                <!-- Header -->                <div class="header">
-                    {'''
-                    <div class="logo-container">
-                        <img src="data:image/jpeg;base64,''' + str(LOGO_BR_BASE64) + '''" alt="BR CONSULT Logo" />
-                    </div>
-                    ''' if LOGO_BR_BASE64 else ''}
-                    <div class="page-title">RAPPORT DE VISITE CHANTIER</div>
-                </div>
-                
-                <!-- Content -->
-                <div class="content">
-                    <!-- General Information -->
-                    <div class="section">
-                        <h2 class="section-title">
-                            <span class="icon">📋</span>
-                            Informations Générales
-                        </h2>                        <div class="info-grid">
-                            <div class="info-item">
-                                <div class="info-label">Nom du client</div>
-                                <div class="info-value">{st.session_state['nom_client']}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Date de visite</div>
-                                <div class="info-value">{st.session_state['date'].strftime('%d/%m/%Y')}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Heure de visite</div>
-                                <div class="info-value">{st.session_state['heure'] or 'Non renseignée'}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Adresse du chantier</div>
-                                <div class="info-value">{st.session_state['adresse']}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Effectif sur site</div>
-                                <div class="info-value">{st.session_state['effectif']} personnes</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Conducteur de travaux</div>
-                                <div class="info-value">{st.session_state['conducteur']}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Chef de chantier</div>
-                                <div class="info-value">{st.session_state['chef_chantier']}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Contact chantier</div>
-                                <div class="info-value">{st.session_state['contact_chantier']}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Rédacteur du rapport</div>
-                                <div class="info-value">{st.session_state['redacteur_rapport']}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Présence sous-traitant</div>
-                                <div class="info-value">{st.session_state['presence_sst']}</div>
-                            </div>
+            <div class="container">
+                <!-- Page 1 -->
+                <div class="page-wrapper">
+                    <!-- Header with title -->
+                    <div class="header-with-title">
+                        {'''
+                        <div class="logo-container">
+                            <img src="data:image/jpeg;base64,''' + str(LOGO_BR_BASE64) + '''" alt="BR CONSULT Logo" />
                         </div>
+                        ''' if LOGO_BR_BASE64 else ''}
+                        <div class="page-title">RAPPORT DE VISITE CHANTIER</div>
                     </div>
                     
-                    <!-- Work Types -->
-                    <div class="section">
-                        <h2 class="section-title">
-                            <span class="icon">🔨</span>
-                            Type de Travaux
-                        </h2>
-                        <div class="work-tags">
+                    <!-- Content -->
+                    <div class="content">
+                        <!-- General Information -->
+                        <div class="section">
+                            <h2 class="section-title">
+                                <span class="icon">📋</span>
+                                Informations Générales
+                            </h2>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <div class="info-label">Nom du client</div>
+                                    <div class="info-value">{st.session_state['nom_client']}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Date de visite</div>
+                                    <div class="info-value">{st.session_state['date'].strftime('%d/%m/%Y')}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Heure de visite</div>
+                                    <div class="info-value">{st.session_state['heure'] or 'Non renseignée'}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Adresse du chantier</div>
+                                    <div class="info-value">{st.session_state['adresse']}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Effectif sur site</div>
+                                    <div class="info-value">{st.session_state['effectif']} personnes</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Conducteur de travaux</div>
+                                    <div class="info-value">{st.session_state['conducteur']}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Chef de chantier</div>
+                                    <div class="info-value">{st.session_state['chef_chantier']}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Contact chantier</div>
+                                    <div class="info-value">{st.session_state['contact_chantier']}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Rédacteur du rapport</div>
+                                    <div class="info-value">{st.session_state['redacteur_rapport']}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Présence sous-traitant</div>
+                                    <div class="info-value">{st.session_state['presence_sst']}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Work Types -->
+                        <div class="section">
+                            <h2 class="section-title">
+                                <span class="icon">🔨</span>
+                                Type de Travaux
+                            </h2>
+                            <div class="work-tags">
         """
         
         # Add selected works
@@ -907,98 +889,124 @@ else:
             html += f'<span class="work-tag">{st.session_state["travaux_autres"]}</span>'
         
         html += f"""
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- Visit Theme -->
-                    {f'''
-                    <div class="section">
-                        <h2 class="section-title">
-                            <span class="icon">🎯</span>
-                            Thème de la Visite
-                        </h2>
-                        <p>{st.session_state["theme_visite"] or "Non spécifié"}</p>
-                    </div>
-                    ''' if st.session_state['theme_visite'] else ''}
-                    
-                    <!-- General Evaluation -->
-                    {f'''
-                    <div class="section">
-                        <h2 class="section-title">
-                            <span class="icon">📝</span>
-                            Évaluation Générale
-                        </h2>
-                        <p>{st.session_state["evaluation_generale"] or "Aucune observation générale"}</p>
-                    </div>
-                    ''' if st.session_state['evaluation_generale'] else ''}
-                    
-                    <!-- Photos Link Section -->
-                    {f'''
-                    <div class="section">
-                        <h2 class="section-title">
-                            <span class="icon">📸</span>
-                            Photos du Chantier
-                        </h2>
-                        <div class="photos-link-box">
-                            <p style="margin-bottom: 10px;">Les photos du chantier sont disponibles via le lien suivant :</p>
-                            <a href="{st.session_state["lien_photos"]}" target="_blank">{st.session_state["lien_photos"]}</a>
+                        
+                        <!-- Visit Theme -->
+                        {f'''
+                        <div class="section">
+                            <h2 class="section-title">
+                                <span class="icon">🎯</span>
+                                Thème de la Visite
+                            </h2>
+                            <p>{st.session_state["theme_visite"] or "Non spécifié"}</p>
                         </div>
+                        ''' if st.session_state['theme_visite'] else ''}
+                        
+                        <!-- General Evaluation -->
+                        {f'''
+                        <div class="section">
+                            <h2 class="section-title">
+                                <span class="icon">📝</span>
+                                Évaluation Générale
+                            </h2>
+                            <p>{st.session_state["evaluation_generale"] or "Aucune observation générale"}</p>
+                        </div>
+                        ''' if st.session_state['evaluation_generale'] else ''}
+                        
+                        <!-- Photos Link Section -->
+                        {f'''
+                        <div class="section">
+                            <h2 class="section-title">
+                                <span class="icon">📸</span>
+                                Photos du Chantier
+                            </h2>
+                            <div class="photos-link-box">
+                                <p style="margin-bottom: 8px;">Les photos du chantier sont disponibles via le lien suivant :</p>
+                                <a href="{st.session_state["lien_photos"]}" target="_blank">{st.session_state["lien_photos"]}</a>
+                            </div>
+                        </div>
+                        ''' if st.session_state['lien_photos'] else ''}
                     </div>
-                    ''' if st.session_state['lien_photos'] else ''}
+                </div>
+                
+                <!-- Page 2 - Scores -->
+                <div class="page-wrapper">
+                    {'''
+                    <div class="header-logo-only">
+                        <img src="data:image/jpeg;base64,''' + str(LOGO_BR_BASE64) + '''" alt="BR CONSULT Logo" style="width: 60px; height: auto;" />
+                    </div>
+                    ''' if LOGO_BR_BASE64 else ''}
                     
-                    <!-- Page break before results -->
-                    <div class="page-break"></div>
-                    
-                    <!-- Scores -->
-                    <div class="section">
-                        <h2 class="section-title">
-                            <span class="icon">📊</span>
-                            Résultats de l'Évaluation
-                        </h2>
-                        <div class="results-grid">
+                    <div class="content-with-logo">
+                        <div class="section">
+                            <h2 class="section-title">
+                                <span class="icon">📊</span>
+                                Résultats de l'Évaluation
+                            </h2>
+                            <div class="results-grid">
         """
         
         # Add results in grid format
         for cat, note in notes_finales.items():
             score_display = f"{note}%" if isinstance(note, int) else "N/A"
             html += f"""
-                            <div class="result-item">
-                                <div class="result-category">{cat.upper()}</div>
-                                <div class="result-score">{score_display}</div>
-                            </div>
+                                <div class="result-item">
+                                    <div class="result-category">{cat.upper()}</div>
+                                    <div class="result-score">{score_display}</div>
+                                </div>
             """
         
         html += f"""
-                        </div>
-                        
-                        <!-- Global Score -->
-                        <div class="global-score">
-                            <div class="score-label">Note Globale du Chantier</div>
-                            <div class="score-value">{note_chantier}%</div>
+                            </div>
+                            
+                            <!-- Global Score -->
+                            <div class="global-score">
+                                <div class="score-label">Note Globale du Chantier</div>
+                                <div class="score-value">{note_chantier}%</div>
+                            </div>
                         </div>
                     </div>
+                </div>
+                
+                <!-- Page 3 - Detailed Criteria -->
+                <div class="page-wrapper">
+                    {'''
+                    <div class="header-logo-only">
+                        <img src="data:image/jpeg;base64,''' + str(LOGO_BR_BASE64) + '''" alt="BR CONSULT Logo" style="width: 60px; height: auto;" />
+                    </div>
+                    ''' if LOGO_BR_BASE64 else ''}
                     
-                    <!-- Page break before detailed criteria -->
-                    <div class="page-break"></div>
-                    
-                    <!-- Detailed Criteria -->
-                    <div class="section">
-                        <h2 class="section-title">
-                            <span class="icon">🔍</span>
-                            Détail des Critères d'Évaluation
-                        </h2>
+                    <div class="content-with-logo">
+                        <div class="section">
+                            <h2 class="section-title">
+                                <span class="icon">🔍</span>
+                                Détail des Critères d'Évaluation
+                            </h2>
         """
         
-        # Add detailed criteria for each category with page breaks
+        # Add detailed criteria for each category
         for idx, (cat, criteres) in enumerate(categories.items()):
-            # Add page break before Sécurité and Environnement sections
-            page_class = "criteria-section new-page" if idx > 0 else "criteria-section"
+            # Start a new page for each category except the first one
+            if idx > 0:
+                html += f"""
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="page-wrapper">
+                    {'''
+                    <div class="header-logo-only">
+                        <img src="data:image/jpeg;base64,''' + str(LOGO_BR_BASE64) + '''" alt="BR CONSULT Logo" style="width: 60px; height: auto;" />
+                    </div>
+                    ''' if LOGO_BR_BASE64 else ''}
+                    
+                    <div class="content-with-logo">
+                        <div class="section" style="margin-bottom: 10px;">
+                """
             
             html += f"""
-                        <div class="{page_class}">
-                            <h3 class="category-header">
-                                {cat}
-                            </h3>
+                            <h3 class="category-header" style="margin-top: 10px; margin-bottom: 10px;">{cat}</h3>
                             <table class="criteria-table">
                                 <thead>
                                     <tr>
@@ -1038,63 +1046,68 @@ else:
             html += """
                                 </tbody>
                             </table>
-                        </div>
             """
+            
+            # Add attendance sheet section directly after Environment criteria
+            if cat == "Environnement":
+                html += """
+                            <!-- Attendance Sheet -->
+                            <div style="margin-top: 20px;">
+                                <h2 class="section-title" style="margin-bottom: 15px;">
+                                    <span class="icon">✍️</span>
+                                    Feuille d'Émargement - Sensibilisation
+                                </h2>
+                """
+                
+                feuille = st.session_state.get("emargement")
+                if feuille and feuille.type.startswith("image"):
+                    feuille.seek(0)  # Reset file pointer
+                    img_base64 = base64.b64encode(feuille.read()).decode()
+                    html += f"""
+                                <div style="text-align: center; margin: 15px 0;">
+                                    <img src="data:image/jpeg;base64,{img_base64}" style="max-width: 100%; max-height: 400px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                </div>
+                    """
+                elif feuille and feuille.type == "application/pdf":
+                    html += """
+                                <p style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 6px;">
+                                    <span style="font-size: 1.1em;">📎 Un fichier PDF a été joint comme feuille d'émargement</span>
+                                </p>
+                    """
+                else:
+                    html += """
+                                <p style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 6px; color: #6c757d;">
+                                    Aucune feuille d'émargement ajoutée
+                                </p>
+                    """
+                
+                html += """
+                            </div>
+                """
         
         html += """
-                    </div>
-        """
-        
-        # Attendance sheet section
-        html += """                    <!-- Attendance Sheet -->
-                    <div class="section">
-                        <h2 class="section-title">
-                            <span class="icon">✍️</span>
-                            Feuille d'Émargement - Sensibilisation
-                        </h2>
-        """
-        
-        feuille = st.session_state.get("emargement")
-        if feuille and feuille.type.startswith("image"):
-            feuille.seek(0)  # Reset file pointer
-            img_base64 = base64.b64encode(feuille.read()).decode()
-            html += f"""
-                        <div style="text-align: center; margin: 20px 0;">
-                            <img src="data:image/jpeg;base64,{img_base64}" style="max-width: 500px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                         </div>
-            """
-        elif feuille and feuille.type == "application/pdf":
-            html += """
-                        <p style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px;">
-                            <span style="font-size: 1.1em;">📎 Un fichier PDF a été joint comme feuille d'émargement</span>
-                        </p>
-            """
-        else:
-            html += """
-                        <p style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px; color: #6c757d;">
-                            Aucune feuille d'émargement ajoutée
-                        </p>
-            """
-        
-        html += """
                     </div>
                 </div>
-            </div>        </body>
+            </div>
+        </body>
     </html>
-""".format(datetime.now().strftime("%d/%m/%Y à %H:%M"))
+"""
         
-        # Generate PDF
+        # Generate PDF with optimized settings
         try:
             with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as f:
                 pdfkit.from_string(html, f.name, configuration=config, options={
                     'enable-local-file-access': None,
                     'encoding': 'UTF-8',
                     'page-size': 'A4',
-                    'margin-top': '10mm',
-                    'margin-right': '10mm',
-                    'margin-bottom': '10mm',
-                    'margin-left': '10mm',
-                    'no-outline': None
+                    'margin-top': '0mm',
+                    'margin-right': '0mm',
+                    'margin-bottom': '0mm',
+                    'margin-left': '0mm',
+                    'no-outline': None,
+                    'print-media-type': None,
+                    'dpi': 300
                 })
                 
                 with open(f.name, "rb") as file:
