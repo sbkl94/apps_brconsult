@@ -1,1 +1,4 @@
 wkhtmltopdf
+libfontconfig1
+libxrender1
+libjpeg62-turbo
