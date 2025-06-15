@@ -46,7 +46,7 @@ categories = {
         "Risques liés aux produits chimiques",
         "Risques incendie, explosion",
         "Connaissance situation d'urgence",
-        "Manutention manuelle et mécanique",
+        "Risques liés à l'activité physique  - manutention manuelle et mécanique",
         "Prise en compte demandes CARSAT / Direction",
         "Organisation chantier",
         "Réalisation des actions précédentes",
